@@ -1,0 +1,114 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Welcome to Overleaf --- just edit your LaTeX on the left,
+% and we'll compile it for you on the right. If you open the
+% 'Share' menu, you can invite other users to edit at the same
+% time. See www.overleaf.com/learn for more info. Enjoy!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{beamer}
+\usepackage{tikz}
+\usepackage{amsmath, bm, amssymb}
+\usepackage{graphicx}
+\graphicspath{{figures/chapter1} {figures/chapter2}}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    }
+\usepackage[backend=biber, citestyle=authoryear, bibstyle=alphabetic]{biblatex}
+\addbibresource{bibliography.bib}
+
+\newcommand{\Vu}{\mathbf{u}}
+\newcommand{\Vh}{\mathbf{h}}
+\newcommand{\Vv}{\mathbf{v}}
+\newcommand{\Vw}{\mathbf{w}}
+\newcommand{\Vb}{\mathbf{b}}
+\newcommand{\Vx}{\mathbf{x}}
+\newcommand{\Vy}{\mathbf{y}}
+\newcommand{\Vz}{\mathbf{z}}
+\newcommand{\Vf}{\mathbf{f}}
+\newcommand{\VC}{\mathbf{C}}
+\newcommand{\VD}{\mathbf{D}}
+\newcommand{\VX}{\mathbf{X}}
+\newcommand{\VS}{\mathbf{S}}
+\newcommand{\VW}{\mathbf{W}}
+\newcommand{\VV}{\mathbf{V}}
+\newcommand{\VU}{\mathbf{U}}
+\newcommand{\Vth}{\bm{\theta}}
+\newcommand{\pmodel}{p_{\text{model}}}
+\newcommand{\pdata}{\hat{p}_{\text{data}}}
+\newcommand{\thetab}{\boldsymbol{\theta}}
+\newcommand{\xb}{\boldsymbol{x}}
+
+
+
+\usepackage{tikzsymbols}
+\usetheme{Frankfurt}
+\usecolortheme{seahorse}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\title[FUB-Presentation]{Global Explainability (XAI) Techniques}
+\subtitle{Quantifying the uncertainty of the explanations}
+\author[Gkolemis, Vasilis] % (optional)
+{Vasilis Gkolemis\inst{1}}
+
+\institute[VFU] % (optional)
+{
+  \inst{1}%
+  ATHENA Research and Innovation Center
+}
+
+\date{November 2021}
+
+
+% Use a simple TikZ graphic to show where the logo is positioned
+% \logo{\begin{tikzpicture}
+% \filldraw[color=red!50, fill=red!25, very thick](0,0) circle (0.5);
+% \node[draw,color=white] at (0,0) {LOGO HERE};
+% \end{tikzpicture}}
+
+%End of title page configuration block
+%------------------------------------------------------------
+%The next block of commands puts the table of contents at the
+%beginning of each section and highlights the current section:
+
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Program}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+% ------------------------------------------------------------
+\begin{document}
+\frame{\titlepage}
+%---------------------------------------------------------
+
+% chapter 1
+\section{Intro to XAI}
+\input{./chapters/intro.tex}
+
+
+% chapter 2
+\section{Feature Effect}
+\input{./chapters/feature_effect.tex}
+
+\section{Feature Interaction}
+% \input{./chapters/feature_effect.tex}
+
+\section{Feature Importance}
+% \input{./chapters/feature_effect.tex}
+
+\section{Extras}
+\subsection{Non-tabular data}
+
+
+\end{document}

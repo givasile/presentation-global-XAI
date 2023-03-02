@@ -1,0 +1,200 @@
+\subsection{Feature Effect}
+
+\begin{frame}
+  \frametitle{Example}
+  \begin{onlyenv}<1>
+    Consider the following mapping $x \rightarrow y$
+    \begin{center}
+      \scalebox{0.5}{
+        \input{figures/chapter2/ovf_1_reality.pgf}
+      }
+    \end{center}
+  \end{onlyenv}
+  \begin{onlyenv}<2>
+    Process unknown \(\rightarrow\) we only have samples
+    \begin{center}
+      \scalebox{0.5}{
+        \input{figures/chapter2/ovf_2_sampling.pgf}
+      }
+    \end{center}
+  \end{onlyenv}
+  \begin{onlyenv}<3>
+    Our goal is to model the process using the available samples (regression)
+    \vspace{1cm}\\
+  \end{onlyenv}
+  \begin{onlyenv}<4>
+    Linear model \(\rightarrow\) Underfiting!
+    \begin{equation*}
+      y = w_1\cdot x + w_0
+    \end{equation*}
+    \begin{center}
+      \scalebox{0.5}{
+        \input{figures/chapter2/ovf_3_linear.pgf}
+      }
+    \end{center}
+  \end{onlyenv}
+  \begin{onlyenv}<5>
+    2$^{nd}$ degree polynomial \(\rightarrow\) Decent Fit!
+    \begin{equation*}
+      y = w_2\cdot x^2 + w_1\cdot x + w_0
+    \end{equation*}
+    \begin{center}
+      \scalebox{0.5}{
+        \input{figures/chapter2/ovf_4_quadratic.pgf}
+      }
+    \end{center}
+  \end{onlyenv}
+  \begin{onlyenv}<6>
+    3$^{rd}$ degree polynomial \(\rightarrow\) Good Fit!
+    \begin{equation*}
+      y = w_3\cdot x^3 + w_2\cdot x^2 + w_1\cdot x + w_0
+    \end{equation*}
+    \begin{center}
+      \scalebox{0.5}{
+        \input{figures/chapter2/ovf_5_3d.pgf}
+      }
+    \end{center}
+  \end{onlyenv}
+  \begin{onlyenv}<7>
+    9$^{th}$ degree polynomial \(\rightarrow\) Overfitting!
+    \begin{equation*}
+      y = \sum_{i=0}^{9}w_i\cdot x^{i}
+    \end{equation*}
+    \begin{center}
+      \scalebox{0.5}{
+        \input{figures/chapter2/ovf_6_9d.pgf}
+      }
+    \end{center}
+  \end{onlyenv}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem diagnosis}
+
+  \begin{itemize}
+  \item Model behavior is \emph{explained} by the shape of the function
+  \item Overfitting, Underfitting are easily diagnosed
+  \item If the input has multiple dimensions $D$?
+    \begin{itemize}
+    \item We often have tens or hundreds of features
+    \item Images and signals: Several thousands of input dimensions
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Bike Sharing Problem}
+
+  \begin{itemize}
+  \item Predict Bike rentals per hour in California
+  \item We have 11 features
+    \begin{itemize}
+    \item e.g., month, hour, temperature, humidity, windspeed
+    \end{itemize}
+  \item We fit a Neural Network \(y = \hat{f}(\xb)\)
+  \item How to make a plot like before?
+    \begin{itemize}
+    \item Feature Effect methods
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\section{Feature Effect Methods}
+
+\begin{frame}
+  \frametitle{Feature effect methods}
+  \begin{itemize}
+  \item High-dimensional input space \(\xb \in \mathbb{R}^D\)
+    \begin{itemize}
+    \item \(x_s \rightarrow \) feature of interest
+    \item \(\Vx_c \rightarrow\) other features
+    \end{itemize}
+  \item How do we isolate the effect of \(x_s\)?
+  \end{itemize}
+\end{frame}
+
+
+%\begin{frame}
+%  \frametitle{Partial Dependence Plots (PDP)}
+%  \begin{onlyenv}<1>
+%    \begin{itemize}
+%    \item Proposed by J. Friedman on 2001\footnote{J. Friedman. ``Greedy
+%    function approximation: A gradient boosting machine.'' Annals of statistics
+%    (2001): 1189-1232} and is the marginal \emph{effect} of a feature to the
+%      model output:
+%      \begin{equation*}
+%        f_s(x_s) = E_{X_c}\left[\hat{f}(x_s, X_c)\right]
+%      \end{equation*}
+%    \item Computation:
+%      \begin{equation*}
+%        \hat{f}_s(x_s) = \frac{1}{n}\sum\limits_{i=1}^{n}\hat{f}(x_s, \Vx_c^{(i)})
+%      \end{equation*}
+%    \end{itemize}
+%  \end{onlyenv}
+%  \begin{onlyenv}<2>
+%    \emph{Bike sharing Dataset:}
+%    \begin{figure}
+%      \includegraphics[width=\textwidth]{pdp-bike-1}
+%      \caption{\footnotesize C. Molnar, IML book}
+%    \end{figure}
+%  \end{onlyenv}
+%\end{frame}
+%
+%\begin{frame}
+%  \frametitle{Issues with PDPs}
+%  \begin{onlyenv}<1>
+%    \begin{itemize}
+%    \item The marginal distribution ignores correlated features!
+%    \item To compute the effect of temperature $=33$ degrees it will (also) use an instance
+%        with month = January
+%    \end{itemize}
+%    \begin{figure}
+%      \includegraphics[width=.6\textwidth]{aleplot-motivation1-1}
+%      \caption{\footnotesize C. Molnar, IML book}
+%    \end{figure}
+%  \end{onlyenv}
+%\end{frame}
+%
+%
+%\begin{frame}
+%  \frametitle{Accumulated Local Effects (ALE)\footnote{D. Apley and
+%    J. Zhu. ``Visualizing the effects of predictor variables in black box
+%    supervised learning models.'' Journal of the Royal Statistical Society:
+%    Series B (Statistical Methodology) 82.4 (2020): 1059-1086.}}
+%
+%  \begin{itemize}
+%  \item Resolves problems that result from the feature correlation by computing
+%    differences over a (small) window
+%  \item Definition: \(f(x_s) = \int_{x_{min}}^{x_s}\mathbb{E}_{\Vx_c|z}[ \frac{\partial f}{\partial x_s}(z, \Vx_c)] \partial z\)
+%  \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%  \frametitle{ALE approximation}
+%  Approximation: \(f(x_s) = \sum\limits_{k=1}^{k_x}
+%  \underbrace{\frac{1}{|\mathcal{S}_k|} \sum_{i:\Vx^i \in \mathcal{S}_k}
+%    \underbrace{[f(z_k, \Vx^i_c) - f(z_{k-1}, \Vx^i_c)]}_{\text{point
+%        effect}}}_{\text{bin effect}} \)
+%
+%  \begin{figure}[ht]
+%    \centering
+%    \includegraphics[width=0.65\textwidth]{./figures/ale_bins_iml.png}
+%    \caption{\footnotesize C. Molnar, IML book}
+%  \end{figure}
+%\end{frame}
+%
+%\begin{frame}
+%  \frametitle{ALE plots - examples}
+%  \begin{figure}
+%    \includegraphics[width=1\textwidth]{ale-bike-1}
+%    \caption{\footnotesize C. Molnar, IML book}
+%  \end{figure}
+%\end{frame}
+
+
+\subsection{Interaction Indices}
+
+\subsection{Feature Importance}

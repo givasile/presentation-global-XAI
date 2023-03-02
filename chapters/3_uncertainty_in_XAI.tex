@@ -1,0 +1,142 @@
+\begin{frame}
+  \frametitle{Quantifying the uncertainty of the explanations}
+  \begin{itemize}
+    \item Many iml methods such as permutation feature importance or
+    shaple values provide explanations without quantifying the
+    uncertainty of the explanation
+    \item The model itself, but also its
+    explanations, are computed from data and hence are subject to
+    uncertainty
+  \item Interpretable Machine Learning – A Brief History,
+    State-of-the-Art and Challenges by~\cite{molnar2020interpretable}
+  spots it as a major open challenge in XAI domain
+\end{itemize}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  Uncertainty quantification is a major challenge in IML.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Could Bayesian Reasoning help?}
+  \begin{itemize}
+  \item We have to (re)define more rigorously the explainablity
+    techniques
+  \item Remember the two ingredients of Bayesian Reasoning; (a) Modeling
+    and (b) Inference
+  \item For (a), can we model explainability techniques as
+    Probabilistic Graphical Models? (especially local surrogate models)
+  \item If achieve (a), we can (re)search for (b) inference techniques
+    that will provide explanations with uncertainty estimation
+  \end{itemize}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  Statement we can discuss: Bayesian Reasoning can be a recipe for
+  uncertainty estimation in XAI
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Feature effect}
+  \begin{itemize}
+  \item Some notation
+    \begin{itemize}
+    \item $x_s$ feature of interest
+    \item $\mathbf{x_c}$ the rest of the features
+    \item $i$, index pointing to the $i-th$ training example
+    \end{itemize}
+
+  \item ALE plots formula:
+    \begin{gather}
+      y = f_{ALE}(x) = \int_{x_0}^{x} \mathbf{E_{x_c|x_s}[f^{(1)}(x_s=z,x_c)]} \partial z\\
+      f^{(1)}(x_s,x_c) =  \frac{\partial f}{\partial x_s}
+    \end{gather}
+    \item Intuition: \( y = f_{ALE}(x) = \int_{x_0}^{x} (\text{local effect at } z) \partial z \)
+    \end{itemize}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  ALE plots model the feature effect as the \alert{integration of the local feature effects}.
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{ALE approximation}
+  \begin{itemize}
+  \item ALE approximation:
+    \begin{gather} \label{eq:ALE_appr}
+      \hat{f}_{ALE}(x_s) = \sum_{k=1}^{K_{x_s}} \frac{1}{|N(k)|} \sum_{i:x_s^i \in N(k)} [f(z_k, \mathbf{x_c}^i) - f(z_{k-1}, \mathbf{x_c}^i)]\\
+      \text{where} \; N(k) \text{ all the samples that belong to the k-th bin}
+    \end{gather}
+
+  \item ALE builds equally-sized bins and approximates the derivative
+    by evaluating $f$ at the limits of the bins
+  \item Side comment: when bins become large the approximation is bad,
+    we work on a better one (stay up to date \dSmiley )
+\end{itemize}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  ALE approximation is weak when bins grow larger.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Quantify the variance}
+  \begin{itemize}
+  \item ALE plots formula:
+    \begin{gather}
+      y = f_{ALE}(x) = \int_{x_0}^{x} \mathbf{E_{x_c|x_s}[f^{(1)}(x_s=z,x_c)]} \partial z\\
+      f^{(1)}(x_s,x_c) =  \frac{\partial f}{\partial x_s}
+    \end{gather}
+  \item ALE plots uses only with the expected local effect $\mathbf{E_{x_c|x_s}[f^{(1)}(x_s=z,x_c)]}$
+  \item Intuition: \( y = f_{ALE}(x) = \int_{x_0}^{x} (\text{expected local effect at } z) \partial z \)
+  \end{itemize}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  ALE definition uses only the \alert{expected local effect} at each position
+\end{frame}
+
+\begin{frame}
+  \frametitle{Quantify the variance}
+  \begin{itemize}
+  \item In general the local effect is a probability distribution \(p_{eff}(y|x_s)\)
+  \item \(p_{eff}(y|x_s) = \int_{x_c} p(y,x_c|x_s) \partial x_c = \int_{x_c} p(y|x_c, x_s) p(x_c|x_s) \partial x_c\)
+  \item \( p(y|x_c, x_s) = \delta (y - \frac{\partial f}{\partial x_s}(x_s,x_c)) \)
+  \item \( p(x_c|x_s) \) is not known, but there are ways to estimate it?
+  \item If estimating the whole distribution \(p_{eff}(y|x_s)\) is difficult, could we at least estimate some critical statistics
+    \begin{itemize}
+    \item expected value \( \mathbb{E}_{p_{eff}}[y] = \mu \)
+    \item Variance \( \mathbb{E}_{p_{eff}}[(y - \mu)^2] \rightarrow \) uncertainty quantification
+    \end{itemize}
+  \item Details in the paper under construction \dSmiley
+  \end{itemize}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  If model the whole distribution of the local effect, we could estimate the uncertainty of the local effect.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Some first approaches in the domain}
+  \begin{itemize}
+  \item Feature importance
+    \begin{itemize}
+      \item Testing Conditional Independence in Supervised Learning Algorithms\cite{watson2021testing}
+      \item All Models are Wrong, but Many are Useful\cite{JMLR:v20:18-760}
+      \end{itemize}
+    \item Relevance propagation
+      \begin{itemize}
+      \item On Feature Relevance Uncertainty: A Monte Carlo Dropout Sampling Approach~\cite{fabi2020}
+      \end{itemize}
+    \item Shapley value
+      \begin{itemize}
+      \item Efficient nonparametric statistical inference on
+        population feature importance using Shapley
+        values\cite{williamson2020efficient}
+      \end{itemize}
+    \end{itemize}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  The domain of Uncertainty Quantification in XAI is still in its first steps
+\end{frame}
+
+\begin{frame}
+  Thanks a lot for the attention!
+
+  Let's discuss!
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Bibliography}
+  \printbibliography
+\end{frame}
