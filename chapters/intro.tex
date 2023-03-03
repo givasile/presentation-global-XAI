@@ -57,8 +57,6 @@
   \end{itemize}
   \end{frame}
 
-\subsection{Global vs Local}
-
 \begin{frame}
   \frametitle{Global vs Local}
   \begin{itemize}
@@ -106,9 +104,25 @@
   \frametitle{Methods we will discuss}
 
   \begin{itemize}
-    \item Feature Effect
-    \item Feature Interaction
-    \item Feature Importance
+  \item Feature Effect
+    \begin{itemize}
+      \item Output: mapping \(f_s(x_s): x_s \rightarrow y\)
+      \item Interpretation: isolate the effect of a single feature \(x_s\) on the output \(y\)
+      \item Paper: \href{https://arxiv.org/abs/1612.08468}{Visualizing the Effects of Predictor Variables in Black Box Supervised Learning Models}
+    \end{itemize}
+  \item Feature Interaction
+    \begin{itemize}
+    \item Output: a number, the level of interaction between \(x_i\) and \(x_j\)
+    \item Interpretation: to what extent the prediction can be expressed as the sum of the feature effects
+      \item Paper: \href{https://arxiv.org/abs/1805.04755}{A Simple and Effective Model-Based Variable Importance Measure}
+    \end{itemize}
+  \item Feature Importance
+    \begin{itemize}
+      \item Output: a number that expresses the importance of feature \(x_s\) on the output
+      \item Interpretation: to what extent the prediction accuracy would drop, if \(x_s\) was asbsent
+        \item Paper: \href{https://arxiv.org/abs/1801.01489}{All Models are Wrong, but Many are Useful}
+    \end{itemize}
+
   \end{itemize}
 
 \end{frame}

@@ -1,4 +1,17 @@
 \begin{frame}
+  \frametitle{Feature effect methods}
+  \begin{itemize}
+  \item High-dimensional input space \(\xb \in \mathbb{R}^D\)
+    \begin{itemize}
+    \item \(x_s \rightarrow \) feature of interest
+    \item \(\Vx_c \rightarrow\) other features
+    \end{itemize}
+  \item How do we isolate the effect of \(x_s\)?
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
   \frametitle{Example}
   \begin{onlyenv}<1>
     Consider the following mapping $x \rightarrow y$
@@ -99,92 +112,81 @@
   \end{itemize}
 \end{frame}
 
+
+
 \begin{frame}
-  \frametitle{Feature effect methods}
-  \begin{itemize}
-  \item High-dimensional input space \(\xb \in \mathbb{R}^D\)
-    \begin{itemize}
-    \item \(x_s \rightarrow \) feature of interest
-    \item \(\Vx_c \rightarrow\) other features
-    \end{itemize}
-  \item How do we isolate the effect of \(x_s\)?
-  \end{itemize}
+ \frametitle{Partial Dependence Plots (PDP)}
+ \begin{onlyenv}<1>
+   \begin{itemize}
+   \item Proposed by J. Friedman on 2001\footnote{J. Friedman. ``Greedy
+   function approximation: A gradient boosting machine.'' Annals of statistics
+   (2001): 1189-1232} and is the marginal \emph{effect} of a feature to the
+     model output:
+     \begin{equation*}
+       f_s(x_s) = E_{X_c}\left[\hat{f}(x_s, X_c)\right]
+     \end{equation*}
+   \item Computation:
+     \begin{equation*}
+       \hat{f}_s(x_s) = \frac{1}{n}\sum\limits_{i=1}^{n}\hat{f}(x_s, \Vx_c^{(i)})
+     \end{equation*}
+   \end{itemize}
+ \end{onlyenv}
+ \begin{onlyenv}<2>
+   \emph{Bike sharing Dataset:}
+   \begin{figure}
+     \includegraphics[width=\textwidth]{pdp-bike-1}
+     \caption{\footnotesize C. Molnar, IML book}
+   \end{figure}
+ \end{onlyenv}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Issues with PDPs}
+ \begin{onlyenv}<1>
+   \begin{itemize}
+   \item The marginal distribution ignores correlated features!
+   \item To compute the effect of temperature $=33$ degrees it will (also) use an instance
+       with month = January
+   \end{itemize}
+   \begin{figure}
+     \includegraphics[width=.6\textwidth]{aleplot-motivation1-1}
+     \caption{\footnotesize C. Molnar, IML book}
+   \end{figure}
+ \end{onlyenv}
 \end{frame}
 
 
-%\begin{frame}
-%  \frametitle{Partial Dependence Plots (PDP)}
-%  \begin{onlyenv}<1>
-%    \begin{itemize}
-%    \item Proposed by J. Friedman on 2001\footnote{J. Friedman. ``Greedy
-%    function approximation: A gradient boosting machine.'' Annals of statistics
-%    (2001): 1189-1232} and is the marginal \emph{effect} of a feature to the
-%      model output:
-%      \begin{equation*}
-%        f_s(x_s) = E_{X_c}\left[\hat{f}(x_s, X_c)\right]
-%      \end{equation*}
-%    \item Computation:
-%      \begin{equation*}
-%        \hat{f}_s(x_s) = \frac{1}{n}\sum\limits_{i=1}^{n}\hat{f}(x_s, \Vx_c^{(i)})
-%      \end{equation*}
-%    \end{itemize}
-%  \end{onlyenv}
-%  \begin{onlyenv}<2>
-%    \emph{Bike sharing Dataset:}
-%    \begin{figure}
-%      \includegraphics[width=\textwidth]{pdp-bike-1}
-%      \caption{\footnotesize C. Molnar, IML book}
-%    \end{figure}
-%  \end{onlyenv}
-%\end{frame}
-%
-%\begin{frame}
-%  \frametitle{Issues with PDPs}
-%  \begin{onlyenv}<1>
-%    \begin{itemize}
-%    \item The marginal distribution ignores correlated features!
-%    \item To compute the effect of temperature $=33$ degrees it will (also) use an instance
-%        with month = January
-%    \end{itemize}
-%    \begin{figure}
-%      \includegraphics[width=.6\textwidth]{aleplot-motivation1-1}
-%      \caption{\footnotesize C. Molnar, IML book}
-%    \end{figure}
-%  \end{onlyenv}
-%\end{frame}
-%
-%
-%\begin{frame}
-%  \frametitle{Accumulated Local Effects (ALE)\footnote{D. Apley and
-%    J. Zhu. ``Visualizing the effects of predictor variables in black box
-%    supervised learning models.'' Journal of the Royal Statistical Society:
-%    Series B (Statistical Methodology) 82.4 (2020): 1059-1086.}}
-%
-%  \begin{itemize}
-%  \item Resolves problems that result from the feature correlation by computing
-%    differences over a (small) window
-%  \item Definition: \(f(x_s) = \int_{x_{min}}^{x_s}\mathbb{E}_{\Vx_c|z}[ \frac{\partial f}{\partial x_s}(z, \Vx_c)] \partial z\)
-%  \end{itemize}
-%\end{frame}
-%
-%\begin{frame}
-%  \frametitle{ALE approximation}
-%  Approximation: \(f(x_s) = \sum\limits_{k=1}^{k_x}
-%  \underbrace{\frac{1}{|\mathcal{S}_k|} \sum_{i:\Vx^i \in \mathcal{S}_k}
-%    \underbrace{[f(z_k, \Vx^i_c) - f(z_{k-1}, \Vx^i_c)]}_{\text{point
-%        effect}}}_{\text{bin effect}} \)
-%
-%  \begin{figure}[ht]
-%    \centering
-%    \includegraphics[width=0.65\textwidth]{./figures/ale_bins_iml.png}
-%    \caption{\footnotesize C. Molnar, IML book}
-%  \end{figure}
-%\end{frame}
-%
-%\begin{frame}
-%  \frametitle{ALE plots - examples}
-%  \begin{figure}
-%    \includegraphics[width=1\textwidth]{ale-bike-1}
-%    \caption{\footnotesize C. Molnar, IML book}
-%  \end{figure}
-%\end{frame}
+\begin{frame}
+ \frametitle{Accumulated Local Effects (ALE)\footnote{D. Apley and
+   J. Zhu. ``Visualizing the effects of predictor variables in black box
+   supervised learning models.'' Journal of the Royal Statistical Society:
+   Series B (Statistical Methodology) 82.4 (2020): 1059-1086.}}
+
+ \begin{itemize}
+ \item Resolves problems that result from the feature correlation by computing
+   differences over a (small) window
+ \item Definition: \(f(x_s) = \int_{x_{min}}^{x_s}\mathbb{E}_{\Vx_c|z}[ \frac{\partial f}{\partial x_s}(z, \Vx_c)] \partial z\)
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{ALE approximation}
+ Approximation: \(f(x_s) = \sum\limits_{k=1}^{k_x}
+ \underbrace{\frac{1}{|\mathcal{S}_k|} \sum_{i:\Vx^i \in \mathcal{S}_k}
+   \underbrace{[f(z_k, \Vx^i_c) - f(z_{k-1}, \Vx^i_c)]}_{\text{point
+       effect}}}_{\text{bin effect}} \)
+
+ \begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.65\textwidth]{ale_bins_iml.png}
+   \caption{\footnotesize C. Molnar, IML book}
+ \end{figure}
+\end{frame}
+
+\begin{frame}
+ \frametitle{ALE plots - examples}
+ \begin{figure}
+   \includegraphics[width=1\textwidth]{ale-bike-1}
+   \caption{\footnotesize C. Molnar, IML book}
+ \end{figure}
+\end{frame}
