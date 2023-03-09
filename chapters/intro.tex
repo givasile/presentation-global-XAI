@@ -19,7 +19,7 @@
   \item Why did the model make a specific decision? \textcolor{red}{local XAI}
   \item What could we change so that the model will make a different decision? \textcolor{red}{counterfactual}
   \item Can we summarize the model's behavior? \textcolor{red}{global XAI}
-  \item Models as knowledge extractors, what hat the model learnt \textcolor{red}{global XAI}
+  \item If models are knowledge extractors, what have they learnt? \textcolor{red}{global XAI}
   \end{itemize}
 \end{frame}
 
@@ -28,48 +28,30 @@
   Qualitative definitions:
   \begin{itemize}
   \item<1-> ``Interpretability is the degree to which a human can understand the
-    cause of a decision'' \footnote{Miller, Tim. ``Explanation in artificial
-    intelligence: Insights from the social sciences.'' arXiv Preprint
-    arXiv:1706.07269. (2017)}
+    cause of a decision'' \footnote{\href{https://arxiv.org/abs/1706.07269}{Miller (2017)}}
   \item<2-> ``Interpretability is the degree to which a human can consistently
-    predict the model’s result''\footnote{Kim, Been, Rajiv Khanna, and
-    Oluwasanmi O. Koyejo. ``Examples are not enough, learn to criticize!
-    Criticism for interpretability.'' Advances in Neural Information Processing
-    Systems (2016).}
+    predict the model’s result''\footnote{\href{https://papers.nips.cc/paper/2016/hash/5680522b8e2bb01943234bce7bf84534-Abstract.html}{Kim et. al (2016)}}
   \item<3-> ``Extraction of relevant knowledge from a machine-learning model
     concerning relationships either contained in data or learned by the
-    model''\footnote{Murdoch, W. J., Singh, C., Kumbier, K., Abbasi-Asl, R. and
-    Yu, B. ``Definitions, methods, and applications in interpretable machine
-    learning.'' Proceedings of the National Academy of Sciences, 116(44),
-    22071-22080. (2019)}
+    model''\footnote{\href{https://www.pnas.org/doi/10.1073/pnas.1900654116}{Murdoch et. al (2019)}}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{My understanding}
-  Interpretability is the degree to which a human can understand the reasoning process for a (specific) prediction
-
-  \begin{itemize}
-    \item interpretability: either by-design or assisted by a post-hoc XAI technique
-    \item degree: non binary, interpretability is a spectrum
-    \item human: interpretability is a human-centric procedure
-    \item reasoning process: mechanism for predicting
-  \end{itemize}
-  \end{frame}
 
 \begin{frame}
   \frametitle{Global vs Local}
   \begin{itemize}
-    \item \textcolor{red}{Local}
-    \begin{itemize}
-      \item Interpret the model's output for a particular input
-      \item Extract interpretable quantity that holds for $x$ close to $x^{(i)}$
-    \end{itemize}
-
     \item \textcolor{red}{Global}
     \begin{itemize}
       \item Provide a general interpretation of the model's behavior
       \item Extract interpretable quantity that holds for $x \in \mathcal{X}$
+      \item Example: Feature Effect $x_s \rightarrow y$
+    \end{itemize}
+    \item \textcolor{red}{Local}
+    \begin{itemize}
+      \item Interpret the model's output for a particular input
+      \item Extract interpretable quantity that holds for $x$ close to $x^{(i)}$
+      \item Example: Linear model that replaces $f$ around $x^{(i)}$ (LIME)
     \end{itemize}
   \end{itemize}
 
@@ -78,51 +60,62 @@
     \includegraphics[width=0.37\linewidth]{ale_concept}
     \includegraphics[width=0.4\linewidth]{lime_concept}
     \caption{(Left) Global vs (Right) Local}
+    \label{fig:figure-1}
   \end{figure}
 \end{frame}
 
 
 \begin{frame}
-  \frametitle{Challenges on global methods}
-  Extract an interpretable quantity that \textcolor{red}{holds for $x \in \mathcal{X}$}
+  \frametitle{Advantages and challenges of global methods}
+
   \begin{itemize}
-    \item Fidelity: does the interpretable quantity mimics the model's behavior?
-    \item Interpretability: is the extracted quantity interpretable enough?
+    \item Advantages:
+    \begin{itemize}
+      \item \textcolor{red}{Interpretable quantity holds for $x \in \mathcal{X}$}
+      \item Global summary of the model's behavior
+    \end{itemize}
+    \item Challenges:
+  \begin{itemize}
+    \item \textcolor{red}{Interpretable quantity holds for $x \in \mathcal{X}$}
+    \item Level of fidelity
+    \item Level of interpretability
     \item Can we have both?
     \begin{itemize}
-      \item if yes, why not replacing the original model with an interpretable one?
-      \item if no, how to deal with the trade-off?
+      \item if yes, replace the original model
+      \item if no, deal with the trade-off
     \end{itemize}
+  \end{itemize}
   \end{itemize}
 
   \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
-  Spoiler: Maybe uncertainty helps...
+  if no, uncertainty may help
 \end{frame}
 
 
 \begin{frame}
   \frametitle{Methods we will discuss}
 
-  \begin{itemize}
+  \begin{enumerate}
   \item Feature Effect
     \begin{itemize}
-      \item Output: mapping \(f_s(x_s): x_s \rightarrow y\)
-      \item Interpretation: isolate the effect of a single feature \(x_s\) on the output \(y\)
-      \item Paper: \href{https://arxiv.org/abs/1612.08468}{Visualizing the Effects of Predictor Variables in Black Box Supervised Learning Models}
+      \item $1D$ plot: \(f_s(x_s): x_s \rightarrow y\)
+      \item Effect (mapping) of a single feature \(x_s\) on the output \(y\)
+      \item \href{https://arxiv.org/abs/1612.08468}{Apley et. al (2019)}
     \end{itemize}
   \item Feature Interaction
     \begin{itemize}
-    \item Output: a number, the level of interaction between \(x_i\) and \(x_j\)
-    \item Interpretation: to what extent the prediction can be expressed as the sum of the feature effects
-      \item Paper: \href{https://arxiv.org/abs/1805.04755}{A Simple and Effective Model-Based Variable Importance Measure}
+    \item number
+    \item Level of interaction between features \(x_i\) and \(x_j\)
+    \item \href{https://arxiv.org/abs/1805.04755}{Greenwell et. al (2018)}
     \end{itemize}
+  \item (1) + (2) $\rightarrow$ Heterogeneous Effects
   \item Feature Importance
     \begin{itemize}
-      \item Output: a number that expresses the importance of feature \(x_s\) on the output
-      \item Interpretation: to what extent the prediction accuracy would drop, if \(x_s\) was asbsent
-        \item Paper: \href{https://arxiv.org/abs/1801.01489}{All Models are Wrong, but Many are Useful}
+      \item number
+      \item to what extend the model accuracy would drop, if \(x_s\) was asbsent
+        \item \href{https://arxiv.org/abs/1801.01489}{Fisher et. al (2018)}
     \end{itemize}
 
-  \end{itemize}
+  \end{enumerate}
 
 \end{frame}

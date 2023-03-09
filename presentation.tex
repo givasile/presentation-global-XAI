@@ -8,7 +8,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass{beamer}
 \usepackage{tikz}
-\usepackage{amsmath, bm, amssymb}
+\usepackage{amsmath, bm, amssymb, amsfonts}
 \usepackage{graphicx}
 \graphicspath{{figures/chapter1} {figures/chapter2} {figures/chapter3} {figures/chapter4}}
 \usepackage{xcolor}
@@ -55,17 +55,17 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 \title[FUB-Presentation]{Global Explainability (XAI) Techniques}
-\subtitle{Quantifying the uncertainty of the explanations}
+\subtitle{State of the Art and Challenges}
 \author[Gkolemis, Vasilis] % (optional)
-{Vasilis Gkolemis\inst{1}}
+{Vasilis Gkolemis\inst{!}\inst{*}}
 
-\institute[VFU] % (optional)
+\institute[HUA] % (optional)
 {
-  \inst{1}%
-  ATHENA Research and Innovation Center
+  \inst{!} ATHENA Research and Innovation Center \and
+  \inst{*} Harokopio University of Athens
 }
 
-\date{November 2021}
+\date{March 2023}
 
 
 % Use a simple TikZ graphic to show where the logo is positioned
@@ -94,24 +94,22 @@
 
 % chapter 1
 \section{Intro to XAI}
-% \input{./chapters/intro.tex}
+\input{./chapters/intro.tex}
 
 % chapter 2
 \section{Feature Effect}
-% \input{./chapters/feature_effect.tex}
+%\input{./chapters/feature_effect.tex}
 
 \section{Feature Interaction}
-\input{./chapters/feature_interaction.tex}
+%\input{./chapters/feature_interaction.tex}
 
 \section{Heterogeneous effects}
-\input{./chapters/heterogeneous_effects.tex}
-
+%\input{./chapters/heterogeneous_effects.tex}
 
 \section{Feature Importance}
 % \input{./chapters/feature_effect.tex}
 
-\section{Extras}
-\subsection{Non-tabular data}
+\section{Non-Tabular case}
 
 
 \end{document}

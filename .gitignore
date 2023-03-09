@@ -128,6 +128,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+
+.idea
+out/
+
 *.aux
 *.bcf
 *.nav
