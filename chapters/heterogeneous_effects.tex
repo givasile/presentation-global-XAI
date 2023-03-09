@@ -16,8 +16,8 @@
   \frametitle{Example}
   \begin{figure}
     \centering
-    \includegraphics[width=0.4\textwidth]{pdp}
-    \caption{PDP plot, taken from }
+    \includegraphics[width=0.5\textwidth]{pdp}
+    \caption{PDP plot, taken from \href{https://arxiv.org/abs/1309.6392}{Goldstein et. al}}
   \end{figure}
   \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
   Interpretation?
@@ -28,8 +28,8 @@
   \frametitle{Example}
   \begin{figure}
     \centering
-    \includegraphics[width=0.4\textwidth]{pdp_ice}
-    \caption{PDP-ICE plot, taken from }
+    \includegraphics[width=0.5\textwidth]{pdp_ice}
+    \caption{PDP-ICE plot, taken from \href{https://arxiv.org/abs/1309.6392}{Goldstein et. al}}
   \end{figure}
   \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
   Interpretation now? Maybe $y \approx \pm 6 x_2 $ depending on a condition
@@ -41,23 +41,22 @@
     \item Local effects, often, deviate from the global effect
     \item Aggregation bias $\rightarrow$ \href{https://arxiv.org/pdf/1908.09635.pdf}{Mehrabi et. al. (2019)}
     \item $\mathtt{ICE}^{(i)}(x_s) = f(x_s, \mathbf{x}_c^{(i)})$
-    \item Another approach $\rightarrow \mathbb{V}(x_s) = \frac{1}{N-1}\sum_i \left ( f(x_s, x_c^{(i)}) - \underbrace{\frac{1}{N} \sum_i f(x_s, x_c^{(i)})}_{\mu} \right)^2$
+    \item Another approach $\rightarrow \mathbb{V}(x_s) = \frac{1}{N-1}\sum_i \left ( f(x_s, x_c^{(i)}) - \underbrace{\frac{1}{N} \sum_i f(x_s, x_c^{(i)})}_{\mu(x_s)} \right)^2$
     \item ICE show the \emph{type} of heteronegeneity, variance shows only the \emph{magnitude}
   \end{itemize}
   \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
-  Same limitations with PDPs when features are correlated
+  ICE have the same limitations as PDPs under correlations!
 \end{frame}
 
 \begin{frame}
   \frametitle{Heterogeneity on ALE}
   \begin{itemize}
-    \item Variance idea again?
+    \item Use the variance idea?
+    \item One way to do it is to estimate the variance inside each bin
     \item Bin splitting is important, otherwise biased estimation of the variance
-    \item $\mathtt{ICE}^{(i)}(x_s) = f(x_s, \mathbf{x}_c^{(i)})$
-    \item Same limitations with PDP, when features are correlated
   \end{itemize}
   \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
-  Stay tuned, we are working on it!
+  Spoiler; we are working on it!
 \end{frame}
 
 

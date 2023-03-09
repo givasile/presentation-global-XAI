@@ -10,7 +10,7 @@
 \usepackage{tikz}
 \usepackage{amsmath, bm, amssymb, amsfonts}
 \usepackage{graphicx}
-\graphicspath{{figures/chapter1} {figures/chapter2} {figures/chapter3} {figures/chapter4}}
+\graphicspath{{figures/chapter1} {figures/chapter2} {figures/chapter3} {figures/chapter4} {figures/chapter5} {figures/chapter6} }
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{algorithm}
@@ -93,23 +93,34 @@
 %---------------------------------------------------------
 
 % chapter 1
-\section{Intro to XAI}
+\section[Intro to XAI]{Intro to XAI (5')}
 \input{./chapters/intro.tex}
 
 % chapter 2
-\section{Feature Effect}
-%\input{./chapters/feature_effect.tex}
+\section[Feature Effect]{Feature Effect (15')}
+\input{./chapters/feature_effect.tex}
 
-\section{Feature Interaction}
-%\input{./chapters/feature_interaction.tex}
+\section[Feature Interaction]{Feature Interaction (5')}
+\input{./chapters/feature_interaction.tex}
 
-\section{Heterogeneous effects}
-%\input{./chapters/heterogeneous_effects.tex}
+\section[Heterogeneous effects]{Heterogeneous effects (5')}
+\input{./chapters/heterogeneous_effects.tex}
 
-\section{Feature Importance}
-% \input{./chapters/feature_effect.tex}
+\section[Feature Importance]{Feature Importance (5')}
+\input{./chapters/feature_importance.tex}
 
-\section{Non-Tabular case}
+\section[Non-Tabular case]{Non-Tabular case (5')}
+\input{./chapters/non_tabular.tex}
 
+\begin{frame}
+    \frametitle{Summary}
+    Global explainability techniques:
+    \begin{itemize}
+        \item provide important model summaries
+        \item they suffer from fidelity issues
+        \item uncertainty can help, i.e., global surrogate models that quantify the uncertainty
+        \item straightforward application only on tabular data where features are meaningful
+    \end{itemize}
+\end{frame}
 
 \end{document}

@@ -1,17 +1,4 @@
 \begin{frame}
-  \frametitle{Feature effect methods}
-  \begin{itemize}
-  \item High-dimensional input space \(\xb \in \mathbb{R}^D\)
-    \begin{itemize}
-    \item \(x_s \rightarrow \) feature of interest
-    \item \(\Vx_c \rightarrow\) other features
-    \end{itemize}
-  \item How do we isolate the effect of \(x_s\)?
-  \end{itemize}
-\end{frame}
-
-
-\begin{frame}
   \frametitle{Example}
   \begin{onlyenv}<1>
     Consider the following mapping $x \rightarrow y$
@@ -80,23 +67,26 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Problem diagnosis}
+  \frametitle{Feature Effect Methods}
 
   \begin{itemize}
   \item Model behavior is \emph{explained} by the shape of the function
   \item Overfitting, Underfitting are easily diagnosed
-  \item If the input has multiple dimensions $D$?
+  \item If high-dimensional input \(\xb \in \mathbb{R}^D\)?
     \begin{itemize}
-    \item We often have tens or hundreds of features
-    \item Images and signals: Several thousands of input dimensions
+    \item Tabular data; tens or hundreds of features
+    \item Images and signals; several thousands of input dimensions
     \end{itemize}
+  \item \(x_s \rightarrow \) feature of interest
+  \item \(\Vx_c \rightarrow\) other features
+  \item How do we isolate the effect of \(x_s\)?
   \end{itemize}
 \end{frame}
 
 
 
 \begin{frame}
-  \frametitle{Bike Sharing Problem}
+  \frametitle{Running Example: Bike Sharing Problem}
 
   \begin{itemize}
   \item Predict Bike rentals per hour in California
@@ -104,23 +94,19 @@
     \begin{itemize}
     \item e.g., month, hour, temperature, humidity, windspeed
     \end{itemize}
-  \item We fit a Neural Network \(y = \hat{f}(\xb)\)
-  \item How to make a plot like before?
-    \begin{itemize}
-    \item Feature Effect methods
-    \end{itemize}
+  \item We fit a ML model \(y = \hat{f}(\xb)\)
   \end{itemize}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  How each feature affects the output?
 \end{frame}
 
 
-
+\subsection{PDP}
 \begin{frame}
  \frametitle{Partial Dependence Plots (PDP)}
  \begin{onlyenv}<1>
    \begin{itemize}
-   \item Proposed by J. Friedman on 2001\footnote{J. Friedman. ``Greedy
-   function approximation: A gradient boosting machine.'' Annals of statistics
-   (2001): 1189-1232} and is the marginal \emph{effect} of a feature to the
+   \item Proposed by J. Friedman on 2001\footnote{\href{https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-5/Greedy-function-approximation-A-gradient-boostingmachine/10.1214/aos/1013203451.full}{Friedman et. al (2001)}} and is the marginal \emph{effect} of a feature to the
      model output:
      \begin{equation*}
        f_s(x_s) = E_{X_c}\left[\hat{f}(x_s, X_c)\right]
@@ -155,7 +141,7 @@
  \end{onlyenv}
 \end{frame}
 
-
+\subsection{ALE}
 \begin{frame}
  \frametitle{Accumulated Local Effects (ALE)\footnote{D. Apley and
    J. Zhu. ``Visualizing the effects of predictor variables in black box
@@ -189,4 +175,130 @@
    \includegraphics[width=1\textwidth]{ale-bike-1}
    \caption{\footnotesize C. Molnar, IML book}
  \end{figure}
+\end{frame}
+
+\subsection{DALE}
+\begin{frame}
+  \frametitle{Our work}
+
+  \begin{itemize}
+  \item Differential Accumumulated Local Effects (DALE)
+    \begin{itemize}
+    \item Asian Conference in Machine Learning (ACML 2022)
+    \item Work done with: Christos Diou, Theodore Dalamagas
+    \end{itemize}
+  \item More efficient and accurate extension of ALE
+  \item Works only with differential models (like Neural Networks)
+  \item \href{https://arxiv.org/abs/2210.04542}{https://arxiv.org/abs/2210.04542}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Our proposal: Differential ALE}
+    \[f(x_s) = \Delta x \sum_k^{k_x} \underbrace{\frac{1}{|\mathcal{S}_k|} \sum_{i:\xb^i \in \mathcal{S}_k} \underbrace{[\frac{\partial f}{\partial x_s}(x_s^i, \bm{x^i_c})]}_{\text{\alert{point effect}}}}_{\text{bin effect}} \]
+
+    \begin{itemize}
+      \item Point Effect \(\Rightarrow\) evaluation \alert{on instances}
+    \begin{itemize}
+    \item Fast \( \rightarrow \) use of auto-differentiation, all derivatives in a single pass
+    \item Versatile \( \rightarrow\) point effects computed once, change bins without cost
+    \item Secure \( \rightarrow\) does not create artificial instances
+    \end{itemize}
+    \end{itemize}
+
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  For \alert{differentiable} models, DALE resolves ALE weaknesses
+\end{frame}
+
+\begin{frame}
+  \frametitle{DALE is faster}
+  \begin{figure}
+   \centering
+   \includegraphics[width=.49\textwidth]{case-1-plot-1}
+   \includegraphics[width=.49\textwidth]{case-1-plot-2}
+   \caption{Light setup; small dataset \((N=10^2\) instances), light \(f\). Heavy setup; big dataset (\(N=10^5\) instances), heavy \(f\)}
+  \end{figure}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  DALE accelerates the estimation
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{DALE may be more accurate - 40 Bins}
+  \begin{figure}
+    \centering
+    \includegraphics<1>[width=0.6\textwidth]{bin_splitting_40_bins}
+    \includegraphics<2>[width=.49\textwidth]{dale_40_bins}
+    \includegraphics<2>[width=.49\textwidth]{ale_40_bins}
+  \end{figure}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  \begin{itemize}
+  \item DALE: on-distribution, noisy bin effect \(\rightarrow\) \textcolor{red}{poor estimation}
+  \item ALE: on-distribution, noisy bin effect \(\rightarrow\) \textcolor{red}{poor estimation}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DALE may be more accurate - 20 Bins}
+  \begin{figure}[ht]
+    \centering
+    \includegraphics<1>[width=0.6\textwidth]{bin_splitting_20_bins}
+    \includegraphics<2>[width=0.49\textwidth]{dale_20_bins}
+    \includegraphics<2>[width=0.49\textwidth]{ale_20_bins}
+  \end{figure}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  \begin{itemize}
+  \item DALE: on-distribution, noisy bin effect \(\rightarrow\) \textcolor{red}{poor estimation}
+  \item ALE: on-distribution, noisy bin effect \(\rightarrow\) \textcolor{red}{poor estimation}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{DALE may be more accurate - 10 Bins}
+  \begin{figure}[ht]
+    \centering
+    \includegraphics<1>[width=0.6\textwidth]{bin_splitting_10_bins}
+    \includegraphics<2>[width=0.49\textwidth]{dale_10_bins}
+    \includegraphics<2>[width=0.49\textwidth]{ale_10_bins}
+    \label{}
+  \end{figure}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  \begin{itemize}
+  \item DALE: on-distribution, noisy bin effect \(\rightarrow\) \textcolor{red}{poor estimation}
+  \item ALE: starts being OOD, noisy bin effect \(\rightarrow\) \textcolor{red}{poor estimation}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DALE may be more accurate - 5 Bins}
+  \begin{figure}[ht]
+    \centering
+    \includegraphics<1>[width=0.6\textwidth]{bin_splitting_5_bins}
+    \includegraphics<2>[width=0.49\textwidth]{dale_5_bins}
+    \includegraphics<2>[width=0.49\textwidth]{ale_5_bins}
+    \label{}
+  \end{figure}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  \begin{itemize}
+  \item DALE: on-distribution, robust bin effect \(\rightarrow\) \textcolor{green}{good estimation}
+  \item ALE: completely OOD, robust bin effect \(\rightarrow\) \textcolor{red}{poor estimation}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DALE may be more accurate - 3 Bins}
+  \begin{figure}[ht]
+    \centering
+    \includegraphics<1>[width=0.6\textwidth]{bin_splitting_3_bins}
+    \includegraphics<2>[width=0.49\textwidth]{dale_3_bins}
+    \includegraphics<2>[width=0.49\textwidth]{ale_3_bins}
+    \label{}
+  \end{figure}
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+  \begin{itemize}
+  \item DALE: on-distribution, robust bin effect \(\rightarrow\) \textcolor{green}{good estimation}
+  \item ALE: completely OOD, robust bin effect \(\rightarrow\) \textcolor{red}{poor estimation}
+  \end{itemize}
 \end{frame}
