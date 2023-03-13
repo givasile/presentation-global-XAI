@@ -2,9 +2,22 @@
   \frametitle{Feature importance}
   \begin{itemize}
     \item Many ways to define \emph{importance}
-    \item Permutation Feature Importance (PFI)
-    \item What is the accuracy drop if we exclude/permute/randomize a feature?
+    \item Permutation Feature Importance (PFI) measures the accuracy drop if we permute a feature
   \end{itemize}
+
+  \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+
+  Algorithm:
+  \begin{itemize}
+    \item Estimate the original model error $e_{orig} = L(y,f(X))$
+    \item For each feature $ d \in \{1, \ldots D\}$
+    \begin{itemize}
+      \item Generate feature matrix $X_{perm}$ by permuting feature $d$ in the data $X$
+      \item Estimate error $e_{perm} = L(y,f(X_{perm}))$
+      \item Calculate permutation feature importance as quotient $FI_d = \frac{e_{perm}}{e_orig}$ or $FI_d = e_{orig} - e_{perm}$
+    \end{itemize}
+  \end{itemize}
+
 \end{frame}
 
 
